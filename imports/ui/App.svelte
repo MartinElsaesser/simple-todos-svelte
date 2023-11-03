@@ -1,22 +1,38 @@
 <script>
 	import Task from "./Task.svelte";
 	import TaskForm from "./TaskForm.svelte";
+	import LoginForm from "./LoginForm.svelte";
 	import {TasksCollection} from "../api/TasksCollection";
 
 	let incompleteCount;
 	let pendingTasksTitle = "";
 	let tasks = [];
 	let hideCompleted = false;
+	let user = null;
 
 	const hideCompletedFilter = {isChecked: {$ne: true}};
 
 	$m: {
-		tasks = TasksCollection.find(hideCompleted ? hideCompletedFilter : {}, { sort: { createdAt: -1 } }).fetch();
+		user = Meteor.user();
 
-		incompleteCount = TasksCollection.find(hideCompletedFilter).count();
+		const userFilter = user ? { userId: user._id } : {};
+		const pendingOnlyFilter = { ...hideCompletedFilter, ...userFilter };
+
+		tasks = user
+			? TasksCollection.find(
+					hideCompleted ? pendingOnlyFilter : userFilter,
+					{ sort: { createdAt: -1 } }
+				).fetch()
+			: [];
+
+		incompleteCount = user
+			? TasksCollection.find(pendingOnlyFilter).count()
+			: 0;
 
 		pendingTasksTitle = incompleteCount ? `(${incompleteCount})` : "";
 	};
+
+	const logout = () => Meteor.logout();
 </script>
 
 <div class="app">
@@ -29,6 +45,10 @@
 	</header>
 
 	<div class="main">
+		{#if user}
+		<div class="user" on:click={logout}>
+				{user.username} 🚪
+		</div>
 		<TaskForm/>
 
 		<div class="filter">
@@ -42,5 +62,8 @@
 				<Task task={task} />
 			{/each}
 		</ul>
+		{:else}
+			<LoginForm/>
+		{/if}
 	</div>
 </div>

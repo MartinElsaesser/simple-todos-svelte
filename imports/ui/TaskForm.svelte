@@ -2,11 +2,15 @@
 	import {TasksCollection} from "../api/TasksCollection";
 
 	let newTask = "";
+	export let user = null;
 
 	const handleSubmit = () => {
+		
 		TasksCollection.insert({
 			text: newTask,
-			createdAt: new Date()
+			createdAt: new Date(),
+			userId: user._id,
+			checked: false
 		});
 		newTask = "";
 	}
