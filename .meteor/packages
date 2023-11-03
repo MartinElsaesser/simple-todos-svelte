@@ -22,3 +22,5 @@ zodern:melte            # Meteor package to allow us to create files with the .s
 hot-module-replacement@0.5.3  # Update client in development without reloading the page
 zodern:types            # Enable types from meteor/atmosphere packages
 dev-error-overlay
+accounts-password
+ostrio:meteor-root

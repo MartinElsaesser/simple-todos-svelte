@@ -114,8 +114,18 @@ header {
 
 .tasks > li {
 	display: flex;
+	align-items: center;
 	padding: 16px;
 	border-bottom: #eee solid 1px;
+	transition: box-shadow .2s linear;
+}
+
+.tasks > li:hover {
+	box-shadow: inset 0px 0px 20px 2px #31548145;
+}
+
+.tasks > li > input {
+	margin-right: 10px;
 }
 
 .tasks > li > span {

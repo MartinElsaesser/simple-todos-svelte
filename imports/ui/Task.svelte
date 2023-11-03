@@ -9,12 +9,11 @@
 	}
 
 	const deleteThisTask = () => {
-		console.log(task);
 		TasksCollection.remove(task._id);
 	}
 </script>
 
-<li>
+<li on:dblclick={toggleChecked}>
 	<input
 		type="checkbox"
 		readonly
